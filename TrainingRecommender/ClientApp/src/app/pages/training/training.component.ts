@@ -111,15 +111,18 @@ export class TrainingComponent implements OnInit {
   save() {
     this.modalRef.hide();
     this.training.trainingRate = this.training.trainingRate / 7;
-    this.training.muscles = this.training.muscles.filter(el => this.trainingMuscles.findIndex(k => k.id === el.muscleId) !== -1);
-    this.trainingMuscles.forEach(el => {
-      if (!this.training.muscles.find(k => k.muscleId === el.id)) {
-        this.training.muscles.push({
-          trainingId: this.training.id,
-          muscleId: el.id,
-        } as TrainingMuscle);
-      }
-    });
+
+    if (this.trainingMuscles) {
+      this.training.muscles = this.training.muscles.filter(el => this.trainingMuscles.findIndex(k => k.id === el.muscleId) !== -1);
+      this.trainingMuscles.forEach(el => {
+        if (!this.training.muscles.find(k => k.muscleId === el.id)) {
+          this.training.muscles.push({
+            trainingId: this.training.id,
+            muscleId: el.id,
+          } as TrainingMuscle);
+        }
+      });
+    }
     this.trainingsService.put(this.training).subscribe();
   }
 

@@ -88,20 +88,22 @@ namespace TrainingRecommender.Controllers
 
             var dbUser = await _context.Users.FindAsync(id);
             _mapper.Map(user, dbUser);
-
+            var idsToSave = user.UserDiseases.Select(a => a.Id);
             var diseasesRelToDelete = await _context.UserDisease
-                .Where(el => el.UserId == user.Id && user.UserDiseases.All(a => a.Id != el.Id)).ToListAsync();
+                .Where(el => el.UserId == user.Id && idsToSave.Contains(el.Id)).ToListAsync();
             
             _context.UserDisease.RemoveRange(diseasesRelToDelete);
 
             var diseasesRelToAdd = user.UserDiseases.Where(el => el.Id == 0);
             _context.UserDisease.AddRange(diseasesRelToAdd);
-
-            foreach (var role in user.Roles)
+            if (user.Roles != null)
             {
-                await _userManager.AddToRoleAsync(dbUser, role);
+                foreach (var role in user.Roles)
+                {
+                    await _userManager.AddToRoleAsync(dbUser, role);
+                }
             }
-
+            
             _context.Entry(dbUser).State = EntityState.Modified;
 
             try

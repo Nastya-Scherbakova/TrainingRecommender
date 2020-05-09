@@ -147,16 +147,18 @@ namespace TrainingRecommender.Controllers
                 return BadRequest();
             }
 
+            var mIds = training.Muscles.Select(el => el.Id);
             var musclesRelToDelete = await _context.TrainingMuscle
-                .Where(el => el.TrainingId == training.Id && training.Muscles.All(a => a.Id != el.Id)).ToListAsync();
+                .Where(el => el.TrainingId == training.Id && !mIds.Contains(el.Id)).ToListAsync();
             
             _context.TrainingMuscle.RemoveRange(musclesRelToDelete);
 
             var musclesRelToAdd = training.Muscles.Where(el => el.Id == 0);
             _context.TrainingMuscle.AddRange(musclesRelToAdd);
 
+            var exIds = training.Exercises.Select(el => el.Id);
             var exRelToDelete = await _context.Exercise
-                .Where(el => el.TrainingId == training.Id && training.Exercises.All(a => a.Id != el.Id)).ToListAsync();
+                .Where(el => el.TrainingId == training.Id && !exIds.Contains(el.Id)).ToListAsync();
 
             _context.Exercise.RemoveRange(exRelToDelete);
 
