@@ -1,0 +1,9 @@
+C:\Projects\TrainingRecommender\TrainingRecommenderML.Model\bin\Debug\netstandard2.0\MLModel.zip
+C:\Projects\TrainingRecommender\TrainingRecommenderML.Model\bin\Debug\netstandard2.0\TrainingRecommenderML.Model.deps.json
+C:\Projects\TrainingRecommender\TrainingRecommenderML.Model\bin\Debug\netstandard2.0\TrainingRecommenderML.Model.dll
+C:\Projects\TrainingRecommender\TrainingRecommenderML.Model\bin\Debug\netstandard2.0\TrainingRecommenderML.Model.pdb
+C:\Projects\TrainingRecommender\TrainingRecommenderML.Model\obj\Debug\netstandard2.0\TrainingRecommenderML.Model.csprojAssemblyReference.cache
+C:\Projects\TrainingRecommender\TrainingRecommenderML.Model\obj\Debug\netstandard2.0\TrainingRecommenderML.Model.AssemblyInfoInputs.cache
+C:\Projects\TrainingRecommender\TrainingRecommenderML.Model\obj\Debug\netstandard2.0\TrainingRecommenderML.Model.AssemblyInfo.cs
+C:\Projects\TrainingRecommender\TrainingRecommenderML.Model\obj\Debug\netstandard2.0\TrainingRecommenderML.Model.dll
+C:\Projects\TrainingRecommender\TrainingRecommenderML.Model\obj\Debug\netstandard2.0\TrainingRecommenderML.Model.pdb

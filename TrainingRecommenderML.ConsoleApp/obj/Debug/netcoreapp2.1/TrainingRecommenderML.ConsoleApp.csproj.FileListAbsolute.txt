@@ -1,0 +1,14 @@
+C:\Projects\TrainingRecommender\TrainingRecommenderML.ConsoleApp\bin\Debug\netcoreapp2.1\MLModel.zip
+C:\Projects\TrainingRecommender\TrainingRecommenderML.ConsoleApp\bin\Debug\netcoreapp2.1\TrainingRecommenderML.ConsoleApp.deps.json
+C:\Projects\TrainingRecommender\TrainingRecommenderML.ConsoleApp\bin\Debug\netcoreapp2.1\TrainingRecommenderML.ConsoleApp.runtimeconfig.json
+C:\Projects\TrainingRecommender\TrainingRecommenderML.ConsoleApp\bin\Debug\netcoreapp2.1\TrainingRecommenderML.ConsoleApp.runtimeconfig.dev.json
+C:\Projects\TrainingRecommender\TrainingRecommenderML.ConsoleApp\bin\Debug\netcoreapp2.1\TrainingRecommenderML.ConsoleApp.dll
+C:\Projects\TrainingRecommender\TrainingRecommenderML.ConsoleApp\bin\Debug\netcoreapp2.1\TrainingRecommenderML.ConsoleApp.pdb
+C:\Projects\TrainingRecommender\TrainingRecommenderML.ConsoleApp\bin\Debug\netcoreapp2.1\TrainingRecommenderML.Model.dll
+C:\Projects\TrainingRecommender\TrainingRecommenderML.ConsoleApp\bin\Debug\netcoreapp2.1\TrainingRecommenderML.Model.pdb
+C:\Projects\TrainingRecommender\TrainingRecommenderML.ConsoleApp\obj\Debug\netcoreapp2.1\TrainingRecommenderML.ConsoleApp.csprojAssemblyReference.cache
+C:\Projects\TrainingRecommender\TrainingRecommenderML.ConsoleApp\obj\Debug\netcoreapp2.1\TrainingRecommenderML.ConsoleApp.AssemblyInfoInputs.cache
+C:\Projects\TrainingRecommender\TrainingRecommenderML.ConsoleApp\obj\Debug\netcoreapp2.1\TrainingRecommenderML.ConsoleApp.AssemblyInfo.cs
+C:\Projects\TrainingRecommender\TrainingRecommenderML.ConsoleApp\obj\Debug\netcoreapp2.1\TrainingRecommenderML.ConsoleApp.csproj.CopyComplete
+C:\Projects\TrainingRecommender\TrainingRecommenderML.ConsoleApp\obj\Debug\netcoreapp2.1\TrainingRecommenderML.ConsoleApp.dll
+C:\Projects\TrainingRecommender\TrainingRecommenderML.ConsoleApp\obj\Debug\netcoreapp2.1\TrainingRecommenderML.ConsoleApp.pdb

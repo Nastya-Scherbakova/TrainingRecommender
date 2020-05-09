@@ -1,0 +1,132 @@
+
+<div class="container">
+  <div class="card" *ngIf="user">
+    <div class="card-body">
+      <h5 class="card-title">Профіль</h5>
+      <div class="card-text">
+        <form>
+          <div class="form-row">
+            <div class="col">
+              <div class="form-group">
+                <label for="username">Ім'я</label>
+                <input type="text" class="form-control" id="username" [(ngModel)]="user.name"
+                  [ngModelOptions]="{standalone: true}" [disabled]="!editMode">
+              </div>
+            </div>
+            <div class="col">
+              <div class="form-group">
+                <label for="surname">Прізвище</label>
+                <input type="text" class="form-control" id="surname" [(ngModel)]="user.surname"
+                  [ngModelOptions]="{standalone: true}" [disabled]="!editMode">
+              </div>
+            </div>
+          </div>
+
+          <div class="form-row">
+            <div class="col">
+              <div class="custom-control custom-switch">
+                <input type="checkbox" [ngModelOptions]="{standalone: true}" [(ngModel)]="user.gender"
+                  class="custom-control-input" id="customSwitch1" [disabled]="!editMode">
+                <label class="custom-control-label" for="customSwitch1">{{user.gender ? 'Жін' : 'Чол'}}</label>
+              </div>
+            </div>
+            <div class="col">
+              <div class="form-group">
+                <label for="dateOfBirth">Вік</label>
+                <input type="number" class="form-control" id="dateOfBirth" [(ngModel)]="user.age"
+                  [ngModelOptions]="{standalone: true}" [disabled]="!editMode">
+              </div>
+            </div>
+          </div>
+          <div class="form-row">
+            <div class="col">
+              <div class="form-group">
+                <label for="height">Ріст</label>
+                <input type="number" class="form-control" id="height" [(ngModel)]="user.height"
+                  [ngModelOptions]="{standalone: true}" [disabled]="!editMode">
+              </div>
+            </div>
+            <div class="col">
+              <div class="form-group">
+                <label for="weight">Вага</label>
+                <input type="number" class="form-control" id="weight" [(ngModel)]="user.weight"
+                  [ngModelOptions]="{standalone: true}" [disabled]="!editMode">
+              </div>
+            </div>
+          </div>
+
+          <div class="form-row" *ngIf="editMode">
+            <div class="col">
+              <label for="trainingRate">Частота тренувань ... разів </label>
+              <input type="number" class="form-control" id="trainingRate" [(ngModel)]="rate"
+              [ngModelOptions]="{standalone: true}">
+            </div>
+            <div class="col">
+              <label for="exampleFormControlSelect1">на ...</label>
+              <select class="form-control" id="exampleFormControlSelect1" [(ngModel)]="ratePer"
+              [ngModelOptions]="{standalone: true}">
+              <option [value]="0">тиждень</option>
+              <option [value]="1">місяць</option>
+              <option [value]="2">рік</option>
+            </select>
+            </div>
+          </div>
+
+          <div class="form-row">
+            <div class="col">
+              <div class="form-group">
+                <label for="activity">Спосіб життя</label>
+                <select class="form-control" id="activity" [(ngModel)]="user.activity" [ngModelOptions]="{standalone: true}"
+                  [disabled]="!editMode">
+                  <option [value]="0">неактивний</option>
+                  <option [value]="1">звичайний</option>
+                  <option [value]="2">активний</option>
+                </select>
+              </div>
+            </div>
+            <div class="col">
+              <div class="form-group">
+                <label for="goal">Мета тренувань</label>
+                <select class="form-control" id="goal" [(ngModel)]="user.goal" [ngModelOptions]="{standalone: true}"
+                  [disabled]="!editMode">
+                  <option [value]="0">схуднення</option>
+                  <option [value]="1">нарощеня масси</option>
+                  <option [value]="2">підтримка форми</option>
+                </select>
+              </div>
+            </div>
+          </div>
+
+          <div class="form-row">
+            <div class="col">
+              <div class="form-group">
+                <label for="figure">Тип фігури</label>
+                <select class="form-control" id="figure" [(ngModel)]="user.figureType" [ngModelOptions]="{standalone: true}"
+                  [disabled]="!editMode">
+                  <option [value]="0">худощава</option>
+                  <option [value]="1">нормальна</option>
+                  <option [value]="2">мускулиста</option>
+                  <option [value]="3">зайва вага</option>
+                </select>
+              </div>
+            </div>
+            <div class="col">
+              <div class="form-group">
+                <label for="diseases">Захворювання</label>
+                <select multiple class="form-control" id="diseases" [(ngModel)]="userDiseases"
+                  [ngModelOptions]="{standalone: true}" [disabled]="!editMode">
+                  <option *ngFor="let disease of diseases" [value]="disease">{{disease.name}}</option>
+                </select>
+              </div>
+            </div>
+          </div>
+
+
+          <button *ngIf="editMode" type="submit" class="btn btn-primary" (click)="save()">Зберегти</button>
+          <button *ngIf="!editMode" type="submit" class="btn btn-primary" (click)="editMode = true">Редагувати</button>
+        </form>
+      </div>
+    </div>
+  </div>
+
+</div>

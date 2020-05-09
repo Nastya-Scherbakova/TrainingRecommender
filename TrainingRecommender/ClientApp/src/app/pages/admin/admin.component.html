@@ -1,0 +1,208 @@
+<div class="container row">
+  <div class="col">
+    <div class="btn-group btn-group-lg" role="group">
+      <button type="button" class="btn btn-secondary" *ngFor="let tab of tabs; let i = index" (click)="switchTab(i)">{{tab}}</button>
+    </div>
+  </div>
+  <div class="col">
+
+    <button class="btn btn-primary" (click)="add(menuTab > 0 ? basicTemplate : userTemplate)">Додати</button>
+  </div>
+</div>
+
+<div class="container row row-cols-1 row-cols-md-2 search-results"
+  infiniteScroll
+  [infiniteScrollDistance]="2"
+  [infiniteScrollThrottle]="50"
+  (scrolled)="onScroll()">
+  <div class="col mb-3" *ngFor="let obj of data; let i = index">
+    <div class="card bg-light">
+      <div class="card-header">{{obj[tabsFields[menuTab][0]]}} {{ tabsFields[menuTab].length > 1 ? obj[tabsFields[menuTab][1]] : ''}}</div>
+      <div class="card-body">
+        <button class="btn btn-danger" (click)="delete(i)">Видалити</button>
+        <button class="btn btn-primary" (click)="edit(i, menuTab > 0 ? basicTemplate : userTemplate)">Редагувати</button>
+        <button *ngIf="menuTab == 0" class="btn btn-info" (click)="getUserRecommended(obj.id, recommendTemplate)">Рекомендації</button>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<ng-template #recommendTemplate>
+  <div class="modal-header">
+    <button type="button" class="close" (click)="modalRef.hide()" aria-label="Close" >
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <div class="container row row-cols-1 row-cols-md-2" *ngIf="recommended">
+    <div class="col mb-3" *ngFor="let training of recommended; let i = index">
+      <div class="card bg-light">
+        <div class="card-header">{{training.title}}</div>
+        <div class="card-body">
+          <h6>Прогнозований рейтинг від користувача: {{training.userTrainings[0].score}}</h6>
+        </div>
+      </div></div>
+    </div>
+    <h5 *ngIf="errText">{{errText}}</h5>
+    <h5 *ngIf="recommended?.length == 0 && !errText">Немає рекомендацій</h5>
+  </div>
+  <div class="modal-footer">
+    <button type="button" (click)="modalRef.hide()" class="btn btn-secondary">Закрити</button>
+  </div>
+</ng-template>
+
+<ng-template #basicTemplate>
+  <div class="modal-header">
+    <button type="button" class="close" (click)="modalRef.hide()" aria-label="Close" >
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <form>
+          <div class="form-group">
+            <label for="surname">Назва</label>
+            <input type="text" class="form-control" id="surname" [(ngModel)]="obj.name"
+              [ngModelOptions]="{standalone: true}">
+          </div>
+      <button type="submit" class="btn btn-primary" (click)="save()">Зберегти</button>
+    </form>
+  </div>
+  <div class="modal-footer">
+    <button type="button" (click)="modalRef.hide()" class="btn btn-secondary">Закрити</button>
+  </div>
+</ng-template>
+
+<ng-template #userTemplate>
+  <div class="modal-header">
+    <button type="button" class="close" (click)="modalRef.hide()" aria-label="Close" >
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <form>
+      <div class="form-row">
+        <div class="col">
+          <div class="form-group">
+            <label for="username">Ім'я</label>
+            <input type="text" class="form-control" id="username" [(ngModel)]="obj.name"
+              [ngModelOptions]="{standalone: true}">
+          </div>
+        </div>
+        <div class="col">
+          <div class="form-group">
+            <label for="surname">Прізвище</label>
+            <input type="text" class="form-control" id="surname" [(ngModel)]="obj.surname"
+              [ngModelOptions]="{standalone: true}">
+          </div>
+        </div>
+      </div>
+
+      <div class="form-row">
+        <div class="col">
+          <div class="custom-control custom-switch">
+            <input type="checkbox" [ngModelOptions]="{standalone: true}" [(ngModel)]="obj.gender"
+              class="custom-control-input" id="customSwitch1">
+            <label class="custom-control-label" for="customSwitch1">{{obj.gender ? 'Жін' : 'Чол'}}</label>
+          </div>
+        </div>
+        <div class="col">
+          <div class="form-group">
+            <label for="dateOfBirth">Вік</label>
+            <input type="number" class="form-control" id="dateOfBirth" [(ngModel)]="obj.age"
+              [ngModelOptions]="{standalone: true}">
+          </div>
+        </div>
+      </div>
+      <div class="form-row">
+        <div class="col">
+          <div class="form-group">
+            <label for="height">Ріст</label>
+            <input type="number" class="form-control" id="height" [(ngModel)]="obj.height"
+              [ngModelOptions]="{standalone: true}">
+          </div>
+        </div>
+        <div class="col">
+          <div class="form-group">
+            <label for="weight">Вага</label>
+            <input type="number" class="form-control" id="weight" [(ngModel)]="obj.weight"
+              [ngModelOptions]="{standalone: true}">
+          </div>
+        </div>
+      </div>
+
+      <div class="form-row">
+        <div class="col">
+          <label for="trainingRate">Частота тренувань ... разів </label>
+          <input type="number" class="form-control" id="trainingRate" [(ngModel)]="rate"
+          [ngModelOptions]="{standalone: true}">
+        </div>
+        <div class="col">
+          <label for="exampleFormControlSelect1">на ...</label>
+          <select class="form-control" id="exampleFormControlSelect1" [(ngModel)]="ratePer"
+          [ngModelOptions]="{standalone: true}">
+          <option [value]="0">тиждень</option>
+          <option [value]="1">місяць</option>
+          <option [value]="2">рік</option>
+        </select>
+        </div>
+      </div>
+
+      <div class="form-row">
+        <div class="col">
+          <div class="form-group">
+            <label for="activity">Спосіб життя</label>
+            <select class="form-control" id="activity" [(ngModel)]="obj.activity" [ngModelOptions]="{standalone: true}"
+             >
+              <option [value]="0">неактивний</option>
+              <option [value]="1">звичайний</option>
+              <option [value]="2">активний</option>
+            </select>
+          </div>
+        </div>
+        <div class="col">
+          <div class="form-group">
+            <label for="goal">Мета тренувань</label>
+            <select class="form-control" id="goal" [(ngModel)]="obj.goal" [ngModelOptions]="{standalone: true}"
+             >
+              <option [value]="0">схуднення</option>
+              <option [value]="1">нарощеня масси</option>
+              <option [value]="2">підтримка форми</option>
+            </select>
+          </div>
+        </div>
+      </div>
+
+      <div class="form-row">
+        <div class="col">
+          <div class="form-group">
+            <label for="figure">Тип фігури</label>
+            <select class="form-control" id="figure" [(ngModel)]="obj.figureType" [ngModelOptions]="{standalone: true}"
+             >
+              <option [value]="0">худощава</option>
+              <option [value]="1">нормальна</option>
+              <option [value]="2">мускулиста</option>
+              <option [value]="3">зайва вага</option>
+            </select>
+          </div>
+        </div>
+        <div class="col">
+          <div class="form-group">
+            <label for="diseases">Захворювання</label>
+            <select multiple class="form-control" id="diseases" [(ngModel)]="userDiseases"
+              [ngModelOptions]="{standalone: true}">
+              <option *ngFor="let disease of diseases" [value]="disease">{{disease.name}}</option>
+            </select>
+          </div>
+        </div>
+      </div>
+      <div class="form-group">
+        <label for="activity">Роль</label>
+        <select class="form-control" id="activity" [(ngModel)]="obj.roles" [ngModelOptions]="{standalone: true}"
+         >
+          <option value="admin">Адміністратор</option>
+        </select>
+      </div>
+    </form>
+  </div>
+</ng-template>

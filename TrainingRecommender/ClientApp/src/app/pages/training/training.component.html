@@ -1,0 +1,172 @@
+<nav aria-label="breadcrumb">
+  <ol class="breadcrumb">
+    <li class="breadcrumb-item"><a [routerLink]="['/trainings']">Тренування</a></li>
+    <li class="breadcrumb-item active" *ngIf="training" aria-current="page">{{training.title}}</li>
+  </ol>
+</nav>
+<div class="card">
+  <div class="card-body" *ngIf="training">
+    <h5 class="card-title">{{training.title}} <span class="badge badge-secondary">{{training.score}}</span></h5>
+    <div class="card-text">
+      <p>
+        Тривалість: {{training.duration}} днів; Днів на тиждень: {{round(training.trainingRate * 7)}}
+      </p>
+      <ul class="list-group list-group-horizontal-lg">
+        <li class="list-group-item" *ngFor="let m of training.muscles">{{m.muscle.name}}</li>
+      </ul>
+      <p>
+        {{training.about}}
+      </p>
+      <div class="row">
+        <div class="col">
+          <ul class="list-group">
+            <li class="list-group-item" *ngFor="let ex of training.exercises">{{ex.title}} ({{ex.guide}}) <span
+                class="badge badge-warning badge-pill" *ngIf="ex.maxCount">{{ex.maxCount}} разів</span></li>
+          </ul>
+        </div>
+        <div class="col">
+          <ul class="list-group" *ngIf="userTraining">
+            <li class="list-group-item" *ngFor="let ex of training.exercises"> {{ex.maxCount ? 'Ваша кількість:' : 'Вправа без кількості'}} <span
+                class="badge badge-primary badge-pill" *ngIf="ex.maxCount">{{max(round(ex.maxCount * userTraining.exerciseIndex), ex.minCount)}}
+                разів</span></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="card-footer">
+    <div class="row">
+      <div class="col">
+        <button *ngIf="!startedByUser" class="btn btn-primary" (click)="start()">Почати</button>
+        <button *ngIf="startedByUser" class="btn btn-primary" (click)="openModal(template)">Оцінити</button>
+        <button *ngIf="isAdmin" class="btn btn-success" (click)="openModal(editTemplate); training.trainingRate = round(training.trainingRate * 7)">Редагувати</button>
+      </div>
+      <div class="col">
+        <button *ngIf="isAdmin" class="btn btn-danger" (click)="delete()">Видалити</button>
+        <button *ngIf="!startedByUser && !userTraining" class="btn btn-warning" (click)="calculate()">Розрахувати мою кількість</button>
+      </div>
+    </div>
+   </div>
+</div>
+
+<ng-template #editTemplate>
+  <div class="modal-header">
+    <h5 class="modal-title" id="exampleModalLabel">Редагування</h5>
+    <button type="button" class="close" (click)="modalRef.hide()" aria-label="Close" >
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <form>
+      <div class="form-row">
+        <div class="col">
+          <div class="form-group">
+            <label for="username">Назва</label>
+            <input type="text" class="form-control" id="username" [(ngModel)]="training.title"
+              [ngModelOptions]="{standalone: true}">
+          </div>
+        </div>
+        <div class="col">
+          <div class="form-group">
+            <label for="surname">Опис</label>
+            <input type="text" class="form-control" id="surname" [(ngModel)]="training.about"
+              [ngModelOptions]="{standalone: true}">
+          </div>
+        </div>
+      </div>
+
+      <div class="form-row">
+        <div class="col">
+          <div class="form-group">
+            <label for="height">Тривалість (днів всього)</label>
+            <input type="number" class="form-control" id="height" [(ngModel)]="training.duration"
+              [ngModelOptions]="{standalone: true}">
+          </div>
+        </div>
+        <div class="col">
+          <div class="form-group">
+            <label for="weight">Частота (разів на тиждень)</label>
+            <input type="number" class="form-control" id="weight" [(ngModel)]="training.trainingRate"
+              [ngModelOptions]="{standalone: true}">
+          </div>
+        </div>
+      </div>
+
+      <div class="form-row">
+        <div class="col">
+          <div class="form-group">
+            <label for="diseases">Групи мускул</label>
+            <select multiple class="form-control" id="diseases" [(ngModel)]="trainingMuscles"
+              [ngModelOptions]="{standalone: true}">
+              <option *ngFor="let muscle of muscles" [value]="muscle">{{muscle.name}}</option>
+            </select>
+          </div>
+        </div>
+      </div>
+      <ul class="list-group">
+        <li class="list-group-item" *ngFor="let ex of training.exercises; let i = index">
+          {{ex.title}} {{ex.guide}} ({{ex.minCount}}-{{ex.maxCount}} разів)
+          <button class="btn btn-primary" (click)="editEx(i)"><i class="fas fa-pencil-alt"></i></button>
+          <button class="btn btn-danger" (click)="deleteEx(i)"><i class="fas fa-trash-alt"></i></button>
+        </li>
+      </ul>
+      <div class="ex-input card card-body" *ngIf="isTempShown">
+        <div class="form-row">
+          <div class="col">
+            <label for="ex-name">Назва</label>
+            <input type="text" class="form-control" id="ex-name" [(ngModel)]="tempEx.title"
+              [ngModelOptions]="{standalone: true}">
+          </div>
+
+        <div class="col">
+          <label for="ex-guide">Деталі</label>
+          <input type="text" class="form-control" id="ex-guide" [(ngModel)]="tempEx.guide"
+            [ngModelOptions]="{standalone: true}"></div>
+      </div>
+      <div class="form-row">
+        <div class="col">
+          <label for="ex-minCount">Мінімальна кількість</label>
+          <input type="number" class="form-control" id="ex-minCount" [(ngModel)]="tempEx.minCount"
+            [ngModelOptions]="{standalone: true}"></div>
+        <div class="col">
+          <label for="ex-maxCount">Максимальна кількість (стандартна)</label>
+          <input type="number" class="form-control" id="ex-maxCount" [(ngModel)]="tempEx.maxCount"
+            [ngModelOptions]="{standalone: true}"></div>
+
+        </div>
+        <button class="btn btn-secondary" (click)="saveEx()">Зберегти вправу</button>
+      </div>
+
+      <button class="btn btn-secondary" *ngIf="!isTempShown" (click)="addEx()">Додати вправу</button>
+      <button type="submit" class="btn btn-primary" (click)="save()">Зберегти</button>
+    </form>
+  </div>
+  <div class="modal-footer">
+    <button type="button" (click)="modalRef.hide()" class="btn btn-secondary">Закрити</button>
+  </div>
+</ng-template>
+
+
+<ng-template #template>
+  <div class="modal-header">
+    <h5 class="modal-title" id="exampleModalLabel">Оцініть комплекс тренувань</h5>
+    <button type="button" class="close" (click)="modalRef.hide()" aria-label="Close" >
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <div class="form-group">
+      <div class="rating">
+        <i class="fa-star" [ngClass]="{'fas': rateHover == 5, 'far': rateHover < 5}" aria-hidden="true" (click)="rate(5)" (mouseenter)="rateHover = 5"></i>
+        <i class="fa-star" [ngClass]="{'fas': rateHover >= 4, 'far': rateHover < 4}" aria-hidden="true" (click)="rate(4)" (mouseenter)="rateHover = 4"></i>
+        <i class="fa-star" [ngClass]="{'fas': rateHover >= 3, 'far': rateHover < 3}" aria-hidden="true" (click)="rate(3)" (mouseenter)="rateHover = 3"></i>
+        <i class="fa-star" [ngClass]="{'fas': rateHover >= 2, 'far': rateHover < 2}" aria-hidden="true" (click)="rate(2)" (mouseenter)="rateHover = 2"></i>
+        <i class="fa-star" [ngClass]="{'fas': rateHover >= 1, 'far': rateHover == 0}" aria-hidden="true" (click)="rate(1)" (mouseenter)="rateHover = 1"></i>
+      </div>
+    </div>
+  </div>
+  <div class="modal-footer">
+    <button type="button" (click)="modalRef.hide()" class="btn btn-secondary">Закрити</button>
+  </div>
+</ng-template>
+
